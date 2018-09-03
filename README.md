@@ -1,6 +1,25 @@
 # Night Owls Detector
 
-[TODO. There will be project description]
+Devman database stores information about who and when sent the task for verification. This script gets a list of people who have passed their homework after 24:00
+
+# Installation
+
+Install the virtual environment and all necessary packages from the file `requirements.txt`
+
+```bash
+git clone https://github.com/arkuz/15_midnighters.git 
+virtualenv -p python3 venv
+cd venv
+source bin/activate
+cd ..
+pip install -r requirements.txt
+```
+
+# Quickstart
+
+```bash
+$ python3 seek_dev_nighters.py
+```
 
 # Project Goals
 
