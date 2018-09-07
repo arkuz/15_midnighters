@@ -22,21 +22,20 @@ def get_midnighters(pages):
             current_timezone = pytz.timezone(
                 record['timezone']
             )
-            current_user = record['username']
             current_datetime = datetime.datetime.fromtimestamp(
                 record['timestamp']
             )
             current_datetime_in_tz = current_datetime.astimezone(
                 current_timezone
             )
+            user_info = {
+                'user': record['username'],
+                'time': current_datetime_in_tz.strftime('%H:%M:%S')
+            }
             hour = current_datetime_in_tz.hour
             start_hour = 0
             end_hour = 5
             if int(hour) >= start_hour and end_hour >= int(hour):
-                user_info = {
-                    'user': current_user,
-                    'time': current_datetime_in_tz.strftime('%H:%M:%S')
-                }
                 user_list.append(user_info)
     return user_list
 
