@@ -1,39 +1,56 @@
 import requests
 import pytz
-
-def get_solution_attempts():
-    endpoint = 'https://devman.org/api/challenges/solution_attempts/'
-    response = requests.get(endpoint)
-    if response == 400:
-        return None
-    else:
-        return response.json()
-
+import datetime
 
 
 def load_attempts():
     pages = 1
     while True:
-        url = 'http://devman.org/api/challenges/solution_attempts/?page='\
-              + str(pages)
-        response = requests.get(url)
-        resp = response.json()
-        pages_limit = resp['number_of_pages']
-        yield resp
-        if pages == pages_limit:
+        url = 'http://devman.org/api/challenges/solution_attempts' \
+              '/?page={}'.format(pages)
+        response_json = requests.get(url).json()
+        yield response_json
+        if pages == response_json['number_of_pages']:
             break
         pages += 1
 
 
-def get_midnighters():
+def get_midnighters(pages):
+    user_list = []
+    for page in pages:
+        for record in page['records']:
+            current_timezone = pytz.timezone(
+                record['timezone']
+            )
+            current_user = record['username']
+            current_datetime = datetime.datetime.fromtimestamp(
+                record['timestamp']
+            )
+            current_datetime_in_tz = current_datetime.astimezone(
+                current_timezone
+            )
+            hour = current_datetime_in_tz.hour
+            start_hour = 0
+            end_hour = 5
+            if int(hour) >= start_hour and end_hour >= int(hour):
+                user_list.append(
+                    {
+                        "user": current_user,
+                        "time": current_datetime_in_tz.strftime('%H:%M:%S')
+                    }
+                )
+    return user_list
 
-    pass
+
+def print_user_list(user_list):
+    if not user_list:
+        print('User list is empty.')
+    else:
+        for user in user_list:
+            print('  {0} - {1}'.format(user['user'], user['time']))
+
 
 if __name__ == '__main__':
 
-
-
-    for attempt in load_attempts():
-        print(attempt)
-
-    #print(get_solution_attempts())
+    print('Getting a list of users, please wait...')
+    print_user_list(get_midnighters(load_attempts()))
