@@ -6,9 +6,9 @@ import datetime
 def load_attempts():
     pages = 1
     while True:
-        url = 'http://devman.org/api/challenges/solution_attempts' \
-              '/?page={}'.format(pages)
-        response_json = requests.get(url).json()
+        url = 'http://devman.org/api/challenges/solution_attempts/'
+        params = {'page': pages}
+        response_json = requests.get(url, params).json()
         yield response_json
         if pages == response_json['number_of_pages']:
             break
@@ -33,12 +33,11 @@ def get_midnighters(pages):
             start_hour = 0
             end_hour = 5
             if int(hour) >= start_hour and end_hour >= int(hour):
-                user_list.append(
-                    {
-                        "user": current_user,
-                        "time": current_datetime_in_tz.strftime('%H:%M:%S')
-                    }
-                )
+                user_info = {
+                    'user': current_user,
+                    'time': current_datetime_in_tz.strftime('%H:%M:%S')
+                }
+                user_list.append(user_info)
     return user_list
 
 
