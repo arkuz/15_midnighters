@@ -8,25 +8,25 @@ def load_attempts():
     while True:
         url = 'http://devman.org/api/challenges/solution_attempts/'
         params = {'page': pages}
-        response = requests.get(url, params).json()
-        yield response
-        if pages == response['number_of_pages']:
+        page = requests.get(url, params).json()
+        yield page['records']
+        if pages == page['number_of_pages']:
             break
         pages += 1
 
 
-def get_midnighters(pages):
+def get_midnighters(attempts):
     user_list = set()
     start_hour = 0
     end_hour = 5
-    for page in pages:
-        for record in page['records']:
+    for attempt in attempts:
+        for record in attempt:
             current_datetime = datetime.datetime.fromtimestamp(
                 record['timestamp'],
                 tz=pytz.timezone(record['timezone'])
             )
-            hour = current_datetime.hour
-            if hour >= start_hour and end_hour >= hour:
+            attempt_hour = current_datetime.hour
+            if attempt_hour >= start_hour and end_hour >= attempt_hour:
                 user_list.add(record['username'])
     return user_list
 
@@ -35,8 +35,7 @@ def print_user_list(user_list):
     if not user_list:
         print('User list is empty.')
     else:
-        for user in user_list:
-            print('  {0}'.format(user))
+        print('\t\n'.join(user_list))
 
 
 if __name__ == '__main__':
