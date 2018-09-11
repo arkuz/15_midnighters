@@ -25,14 +25,13 @@ def get_midnighters(attempts):
     start_hour = 0
     end_hour = 5
     for attempt in attempts:
-        for record in attempt:
-            current_datetime = datetime.datetime.fromtimestamp(
-                record['timestamp'],
-                tz=pytz.timezone(record['timezone'])
-            )
-            attempt_hour = current_datetime.hour
-            if attempt_hour >= start_hour and end_hour >= attempt_hour:
-                user_list.add(record['username'])
+        current_datetime = datetime.datetime.fromtimestamp(
+            attempt['timestamp'],
+            tz=pytz.timezone(attempt['timezone'])
+        )
+        attempt_hour = current_datetime.hour
+        if start_hour <= attempt_hour <= end_hour:
+            user_list.add(attempt['username'])
     return user_list
 
 
