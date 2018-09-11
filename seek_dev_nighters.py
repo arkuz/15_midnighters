@@ -4,12 +4,17 @@ import datetime
 
 
 def load_attempts():
+    url = 'http://devman.org/api/challenges/solution_attempts/'
     pages = 1
     while True:
-        url = 'http://devman.org/api/challenges/solution_attempts/'
         params = {'page': pages}
         page = requests.get(url, params).json()
-        yield page['records']
+        for attempt in page['records']:
+            yield {
+                'timezone': attempt['timezone'],
+                'username': attempt['username'],
+                'timestamp': attempt['timestamp']
+            }
         if pages == page['number_of_pages']:
             break
         pages += 1
