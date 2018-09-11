@@ -20,12 +20,12 @@ pip install -r requirements.txt
 ```bash
 $ python3 seek_dev_nighters.py
 Getting a list of users, please wait...
-  work7kost
-  zedchi
-  8e94ac43ec4e4c57
-  tumkir
-  da3c84b1d9eb403e
-  arkuz
+work7kost
+zedchi
+8e94ac43ec4e4c57
+tumkir
+da3c84b1d9eb403e
+arkuz
 ```
 
 # Project Goals
