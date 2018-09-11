@@ -39,7 +39,7 @@ def print_user_list(user_list):
     if not user_list:
         print('User list is empty.')
     else:
-        print('\t\n'.join(user_list))
+        print('\n'.join(user_list))
 
 
 if __name__ == '__main__':
